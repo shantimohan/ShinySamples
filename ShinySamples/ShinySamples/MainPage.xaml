@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ShinySamples.MainPage">
+
+    <StackLayout>
+        <Frame BackgroundColor="#2196F3" Padding="24" CornerRadius="0">
+            <Label Text="Welcome to Shiny in Xamarin.Forms!" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+        </Frame>
+
+        <Label Text="Channel Status: "
+               x:Name="ChannelStatus"
+               HorizontalOptions="FillAndExpand" />
+
+        <StackLayout Orientation="Horizontal">
+            <Button x:Name="CreateChannel"
+                Clicked="CreateChannel_Clicked"
+                Margin="30,5"
+                BorderColor="Blue"
+                BorderWidth="2"
+                BackgroundColor="LightBlue"
+                Text="Create Channel" />
+
+            <Button x:Name="ClearChannels"
+                Clicked="ClearChannels_Clicked"
+                IsEnabled="False"
+                Margin="40,5"
+                BorderColor="Blue"
+                BorderWidth="2"
+                BackgroundColor="LightBlue"
+                Text="Clear Channels" />
+        </StackLayout>
+
+        <StackLayout Orientation="Horizontal">
+            <Button x:Name="SendNotifiction"
+                Clicked="SendNotifiction_Clicked"
+                IsEnabled="False"
+                Margin="10,5"
+                BorderColor="Blue"
+                BorderWidth="2"
+                BackgroundColor="LightBlue"
+                Text="Send Notification Now" />
+
+            <Button x:Name="ScheduleNotifiction"
+                Clicked="SendNotifiction_Clicked"
+                IsEnabled="False"
+                Margin="10,5"
+                BorderColor="Blue"
+                BorderWidth="2"
+                BackgroundColor="LightBlue"
+                Text="Schedule Notification" />
+        </StackLayout>
+
+        <Label Text="Schedule Time:"
+               HorizontalOptions="CenterAndExpand"
+               HorizontalTextAlignment="Start" />
+        
+        <TimePicker x:Name="ScheduleTime"
+                    HorizontalOptions="CenterAndExpand" />
+
+        <StackLayout Orientation="Horizontal">
+            <Button x:Name="ListChannels"
+                Clicked="ListChannels_Clicked"
+                Margin="20,5"
+                BorderColor="Blue"
+                BorderWidth="2"
+                BackgroundColor="LightBlue"
+                Text="List Channels" />
+
+            <Button x:Name="ListPending"
+                Clicked="ListPending_Clicked"
+                Margin="40,5"
+                BorderColor="Blue"
+                BorderWidth="2"
+                BackgroundColor="LightBlue"
+                Text="List Pending Messages" />
+        </StackLayout>
+
+        <ListView x:Name="NotificationsList"
+                  BackgroundColor="LightGreen"
+                  Margin="10"
+                  HorizontalOptions="CenterAndExpand"
+                  VerticalOptions="FillAndExpand" />
+    </StackLayout>
+
+</ContentPage>
