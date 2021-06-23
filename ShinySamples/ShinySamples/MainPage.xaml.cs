@@ -14,11 +14,15 @@ namespace ShinySamples
     {
 		INotificationManager manager;
 		string channelId = "Shiny Notification Channel";
+		int messageId = 1;
 		bool ChannelCreated = false;
 
 		public MainPage()
         {
             InitializeComponent();
+
+			ScheduleDate.Date = DateTime.Today;
+			ScheduleTime.Time = DateTime.Now.TimeOfDay.Add(new TimeSpan(0, 10, 0));
 
 			manager = ShinyHost.Resolve<INotificationManager>();
 		}
@@ -52,10 +56,20 @@ namespace ShinySamples
 						ClearChannels.IsEnabled = !ClearChannels.IsEnabled;
 						SendNotifiction.IsEnabled = true;
 						ScheduleNotifiction.IsEnabled = true;
+
+						var pendingList = await manager.GetPending();
+						messageId = 0;
+
+						foreach (Notification ntf in pendingList)
+                        {
+							if (ntf.Id > messageId)
+								messageId = ntf.Id;
+                        }
+
+						messageId++;
 					}
 				}
 			}
-
 		}
 
         private async void CreateChannel_Clicked(object sender, EventArgs e)
@@ -130,7 +144,7 @@ namespace ShinySamples
         {
 			Button btn = (Button)sender;
 
-			DateTime dt = DateTime.Now.AddDays(1);
+			DateTime dt = ScheduleDate.Date;
 			dt = new DateTime(dt.Year, dt.Month, dt.Day, ScheduleTime.Time.Hours, ScheduleTime.Time.Minutes, 0);
 
 			string message = $"Id: {channelId}";
@@ -140,24 +154,37 @@ namespace ShinySamples
 			AccessState result = await manager.RequestAccess();
             if (result == AccessState.Available)
             {
-				if (btn.Text.StartsWith("Send"))
-                {
-					await manager.Send(
-						"WELCOME TO Local Notifications by Shiny",
-						message,
-						channelId
-					);
-				}
-				else
-                {
-					await manager.Send(
-						"WELCOME TO Local Notifications by Shiny",
-						message,
-						channelId, dt
-					);
-				}
+				Notification notification = new Notification
+				{
+					Title = "WELCOME TO Local Notifications by Shiny",
+					Message = message,
+					Channel = channelId,
+					Id = messageId
+				};
 
-				//channelNum++;
+				if (btn.Text.StartsWith("Sch"))
+					notification.ScheduleDate = dt;
+
+				await manager.Send(notification);
+
+				//if (btn.Text.StartsWith("Send"))
+    //            {
+				//	await manager.Send(
+				//		"WELCOME TO Local Notifications by Shiny",
+				//		message,
+				//		channelId
+				//	);
+				//}
+				//else
+    //            {
+				//	await manager.Send(
+				//		"WELCOME TO Local Notifications by Shiny",
+				//		message,
+				//		channelId, dt
+				//	);
+				//}
+
+				messageId++;
 			}
 		}
 
@@ -191,12 +218,25 @@ namespace ShinySamples
 
 				foreach (Notification ntf in pendingList)
 				{
-					string desc = $"{ntf.Message.Substring(ntf.Message.IndexOf("Sch"))}";
+					string desc = $"{ntf.Id} {ntf.Message.Substring(ntf.Message.IndexOf("Sch"))}";
 					list.Add(desc);
 				}
 
 				NotificationsList.ItemsSource = list;
 			}
+		}
+
+        private async void CancelMessage_Clicked(object sender, EventArgs e)
+        {
+			string[] s = NotificationsList.SelectedItem.ToString().Split(' ');
+			int id = Convert.ToInt32(s[0]);
+
+			AccessState result = await manager.RequestAccess();
+			if (result == AccessState.Available)
+            {
+				await manager.Cancel(id);
+            }
+
 		}
     }
 }

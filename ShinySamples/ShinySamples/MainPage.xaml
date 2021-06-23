@@ -51,13 +51,26 @@
                 Text="Schedule Notification" />
         </StackLayout>
 
-        <Label Text="Schedule Time:"
-               HorizontalOptions="CenterAndExpand"
-               HorizontalTextAlignment="Start" />
-        
-        <TimePicker x:Name="ScheduleTime"
-                    HorizontalOptions="CenterAndExpand" />
+        <Grid RowDefinitions="Auto,Auto"
+              ColumnDefinitions="*,*">
+            <Label Text="Schedule Date &amp; Time:"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   HorizontalOptions="CenterAndExpand"
+                   HorizontalTextAlignment="Start" />
 
+            <DatePicker x:Name="ScheduleDate"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        HorizontalOptions="Center" />
+            
+            <TimePicker x:Name="ScheduleTime"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        HorizontalOptions="Center" />
+        </Grid>
+        
         <StackLayout Orientation="Horizontal">
             <Button x:Name="ListChannels"
                 Clicked="ListChannels_Clicked"
@@ -75,6 +88,14 @@
                 BackgroundColor="LightBlue"
                 Text="List Pending Messages" />
         </StackLayout>
+
+        <Button x:Name="CancelMessage"
+                Clicked="CancelMessage_Clicked"
+                Margin="40,5"
+                BorderColor="Blue"
+                BorderWidth="2"
+                BackgroundColor="LightBlue"
+                Text="Cancel Selected Message" />
 
         <ListView x:Name="NotificationsList"
                   BackgroundColor="LightGreen"
