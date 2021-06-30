@@ -147,9 +147,9 @@ namespace ShinySamples
 			DateTime dt = ScheduleDate.Date;
 			dt = new DateTime(dt.Year, dt.Month, dt.Day, ScheduleTime.Time.Hours, ScheduleTime.Time.Minutes, 0);
 
-			string message = $"Id: {channelId}";
+			string message = $"Id: {channelId} ";
 			if (btn.Text.StartsWith("Schedule"))
-				message += $" Scheduled for {dt.ToShortDateString()} {dt.ToShortTimeString()}";
+				message = $"Scheduled for {dt.ToShortDateString()} {dt.ToShortTimeString()}";
 
 			AccessState result = await manager.RequestAccess();
             if (result == AccessState.Available)
@@ -166,23 +166,6 @@ namespace ShinySamples
 					notification.ScheduleDate = dt;
 
 				await manager.Send(notification);
-
-				//if (btn.Text.StartsWith("Send"))
-    //            {
-				//	await manager.Send(
-				//		"WELCOME TO Local Notifications by Shiny",
-				//		message,
-				//		channelId
-				//	);
-				//}
-				//else
-    //            {
-				//	await manager.Send(
-				//		"WELCOME TO Local Notifications by Shiny",
-				//		message,
-				//		channelId, dt
-				//	);
-				//}
 
 				messageId++;
 			}
